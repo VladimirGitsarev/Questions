@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container questions-container mt-3 p-5 col-8">
+    <div class="row mb-3">
+        <h2>Unanswered questions <span class="q-number align-middle">{{ data|length }}</span></h2>
+    </div>
+    {% if data %}
+        {% for q in data%}
+        <div class="row">
+            <div class="question-item p-4 mb-3" href="#">
+                <a href="#"><h3 style="color:#d35656;">{{ q.body }}</h3></a>
+                {% if q.anonymous %}
+                <p style="color: #3c3d47"> <img class="question-userpic" src="https://via.placeholder.com/40x40" alt=""> &nbsp; Anonymous </p>
+                {% else %}
+                <a href="/user/{{q.sender}}" style="color: #3c3d47"> <img class="question-userpic" src="{{q.picture}}" alt=""> @{{ q.sender }}</a>
+                {% endif %}
+                <p class="time">{{ q.time }} ago</p>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="row">
+            <div class="question-empty" href="#">
+                <p>You don't have unanswered questions.</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

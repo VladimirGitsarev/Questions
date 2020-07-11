@@ -1,0 +1,6 @@
+1. Add "answer_date" field and replace date for answers
+2. Add "answer" button for each question
+3. Add "answer the question" form
+4. Add "new question" form for each user
+5. Add profile editor including avatar uploading
+

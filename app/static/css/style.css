@@ -1,0 +1,172 @@
+body{
+    background-color: #3c3d47  !important;
+    color: #3c3d47 !important;
+}
+
+input{
+    color: #3c3d47;
+}
+
+.register-link{
+    text-decoration: none;
+    color:#d35656;
+}
+
+.register-link:hover{
+    color:#f66767;
+    text-decoration: none;
+}
+
+ul, li{
+    display: block;
+    padding: 0;
+    margin-bottom: 0 !important;
+}
+
+.menu-bar{
+    background-color: #f66767;
+}
+
+.menu-item{ 
+    margin-left: 30px;
+    font-size: 14pt;
+    color: white;
+    transition: color .3s;
+}
+
+.menu-user{
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-weight: bold;
+}
+
+.menu-item:hover{
+    color: lightgray;
+    transition: color .3s;
+    text-decoration: none;
+} 
+
+.log-in{
+    border-radius: 10px;
+    box-shadow: #f66767 0px 0px 5px;
+    background-color: white;
+    animation: 1s ease-out 0s 1 changeOpacity;
+}
+
+.log-in input[type="submit"]{
+    width: 100%;
+    background-color: #f66767;
+    border-radius: 5px;
+    border: 1px solid #f66767;
+    padding: 5px;
+    transition: all .3s;  
+    color: white;  
+}
+
+.log-in input[type="submit"]:hover{
+    background-color: white;
+    transition: all .3s;  
+    color: #f66767;
+}
+
+.log-in input[type="text"], .log-in input[type="password"]{
+    width: 100%;
+}
+
+.questions-container{
+    border-radius: 10px;
+    background-color: white;
+}
+
+.q-number{
+    border-radius: 30px;
+    background-color: #f66767;
+    color: white;
+    font-size: 12pt;
+    padding: 10px 15px;
+    font-weight: bold;
+}
+
+.question-item .time{
+    font-size: 10pt;
+    color:gray;
+    padding: 0;
+    margin: 0;
+    margin-top: 10px;
+}
+
+.question-item{
+    border-radius: 10px;
+    background-color: whitesmoke;
+    width: 100%;
+    transition: all .3s;
+    color: #3c3d47;
+}
+
+.question-item:hover{
+    background-color: #eeeeee;
+    transition: all .5s;
+    color: #3c3d47;
+}
+
+.question-item a:hover{
+    text-decoration: none;
+}
+
+.question-empty{
+    background-color: white;
+    color:gray;
+    text-align: center;
+    font-size: 16pt;
+}
+
+.question-userpic{
+    border-radius: 20px;
+}
+
+.answer-body{
+    font-size: 15pt;
+}
+
+.user-image{
+    border-radius: 100px;
+}
+
+.about-container p{
+    padding: 0;
+    margin: 0;
+    margin-bottom: 5px;
+    color: white;
+}
+
+#birthdate{
+    color:#3c3d47;
+    padding: 5px;
+    width: 100%;
+}
+
+@keyframes slideInFromTop {
+    0% {
+      transform: translateY(-100%);
+    }
+    100% {
+      transform: translateY(0%);
+    }
+}
+
+@keyframes changeOpacity{
+    0% {
+      opacity: 0%;
+    }
+    100% {
+      opacity: 100%;
+    }
+}
+  
+.message {  
+    animation: 1s ease-out 0s 1 slideInFromTop;
+    text-align: center;
+    background: #333;
+    padding: 10px;
+}

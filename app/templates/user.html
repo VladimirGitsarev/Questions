@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container col-8">
+    <div class="row justify-content-center mt-4">
+        <div class="col col-auto">
+            <!-- <img class="user-image" src="https://via.placeholder.com/175x175" alt=""> -->
+            <img class="user-image" src="{{user.avatar(175)}}" alt="">
+        </div>
+        <div class="col col-auto about-container">
+            <p style="font-weight: bold; font-size: 14pt;"><i class="fas fa-at"></i>{{user.username}}</p>
+            <p><i class="fas fa-user"></i> {{user.name}} {{user.surname}}</p>
+            <p><i class="fas fa-birthday-cake"></i> {{user.birthdate.strftime('%m-%d-%Y')}}</p>
+            <p><i class="fas fa-envelope"></i> {{user.email}}</p>
+            <p><i class="fas fa-map-marker-alt"></i> {{user.location}}</p>
+            <p><i class="fas fa-link"></i> {{user.link}}</p>
+        </div>
+    </div>
+</div>
+<div class="container questions-container mt-4 p-5 col-8 mb-5">
+    <div class="row mb-3">
+        <h2>Answers <span class="q-number align-middle">{{ data|length }}</span></h2>
+    </div>
+    {% if data %}
+        {% for q in data%}
+        <div class="row">
+                <div class="question-item p-4 mb-3">
+                    <h3 style="color:#d35656;">{{ q.body }}
+                        {% if not q.anonymous %}
+                        <a class="align-middle" href="/user/{{q.sender}}" style="color: gray; font-size: 12pt;"> @{{ q.sender }}</a>
+                        {% endif %}
+                    </h3>
+                    <p class="answer-body">{{q.answer}}</p>
+                    <p class="time">{{ q.time }} ago</p>
+                </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="row">
+            <div class="question-empty" href="#">
+                <p>This user hasn't answered any questions.</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}
