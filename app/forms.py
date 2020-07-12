@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from wtforms.fields.html5 import DateField
+from wtforms.widgets import TextArea
 from app.models import User
 
 
@@ -33,3 +34,12 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+class AnswerForm(FlaskForm):
+    answer = StringField('Answer', validators=[DataRequired(), Length(max=300)], widget=TextArea())
+    submit = SubmitField('Answer')
+
+class AskForm(FlaskForm):
+    body = StringField('Ask', validators=[DataRequired(), Length(max=300)], widget=TextArea())
+    is_anonymous = BooleanField('Anonymous question')
+    submit = SubmitField('Ask')

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container col-lg-8 col-xs-12 mt-5" style="color:white; text-align:center;">
+    <i class="fas fa-exclamation-triangle fa-10x mb-4"></i>
+    <h1>An unexpected error has occurred</h1>
+    <p>The administrator has been notified. Sorry for the inconvenience!</p>
+    <p><a href="{{ url_for('index') }}" style="color:lightgray;">Back</a></p>
+</div>
+{% endblock %}

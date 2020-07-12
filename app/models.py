@@ -43,7 +43,7 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(300))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    answered = db.Column(db.Boolean, nullable=False)
+    answered = db.Column(db.Boolean, nullable=False, default=False)
     answer = db.Column(db.String(300), default=None)
     answer_timestamp = db.Column(db.DateTime, default=None)
     anonymous = db.Column(db.Boolean, nullable=False, default=False)

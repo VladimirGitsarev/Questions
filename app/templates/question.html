@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container questions-container mt-3 mb-3 pl-5 pr-5 pt-4 pb-3 col-lg-8 col-xs-12">
+    <div class="row">
+        <div class="answer-container"> 
+            <h5 style="color:#d35656; margin-bottom: 0;">{{ question.body }}
+                {% if not question.anonymous %}
+                <a class="align-middle" href="/user/{{user.username}}" style="color: gray; font-size: 12pt;"> @{{ user.username }}</a>
+                {% endif %}
+            </h5>
+            <p class="time" style="margin-top: 0;">{{ time }} ago</p>
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                {{ form.answer(size=300) }}<br>
+                {% for error in form.answer.errors %}
+                <span style="color: #d35656;">{{ error }}</span>
+                {% endfor %}
+                <div class="d-flex justify-content-between">
+                    <i class="far fa-image fa-2x d-inline align-middle" style="cursor: pointer;"></i>
+                    <p class="d-inline">{{ form.submit() }}</p>
+                </div>              
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

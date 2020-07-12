@@ -1,17 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container questions-container mt-3 p-5 col-8">
+<div class="container questions-container mt-3 p-5 col-lg-8 col-xs-12">
     <div class="row mb-3">
-        <h2>Unanswered questions <span class="q-number align-middle">{{ data|length }}</span></h2>
+        <h5>Unanswered questions <span class="q-number align-middle">{{ data|length }}</span></h5>
     </div>
     {% if data %}
         {% for q in data%}
         <div class="row">
-            <div class="question-item p-4 mb-3" href="#">
-                <a href="#"><h3 style="color:#d35656;">{{ q.body }}</h3></a>
+            <div class="question-item p-4 mb-3">
+                <a href="/question/{{q.id}}"><h5 style="color:#d35656;">{{ q.body }}</h5></a>
                 {% if q.anonymous %}
-                <p style="color: #3c3d47"> <img class="question-userpic" src="https://via.placeholder.com/40x40" alt=""> &nbsp; Anonymous </p>
+                <p style="color: #3c3d47"> 
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT2ZfKhS-pyePlvAo3yN40T3qakuiMSmLVEWQ&usqp=CAU" width=40 height=40 class="question-userpic" alt="">
+                    <!-- <img class="question-userpic" src="https://via.placeholder.com/40x40" alt="">  -->
+                    <!-- <i class="fas fa-user-secret fa-3x align-middle question-userpic"></i> -->
+                @anonymous </p>
                 {% else %}
                 <a href="/user/{{q.sender}}" style="color: #3c3d47"> <img class="question-userpic" src="{{q.picture}}" alt=""> @{{ q.sender }}</a>
                 {% endif %}
