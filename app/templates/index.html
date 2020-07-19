@@ -1,8 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container">
-        <h1>Hello, {{ current_user.username }}</h1>
+<div class="container questions-container mt-3 mb-3 pl-5 pr-5 pt-4 pb-3 col-lg-8 col-xs-12">
+    <div class="row mb-1">
+        <h5>Followed questions:</span></h5>
     </div>
-   
+    {% if questions %}
+        {% for q in questions%}
+        <div class="row">
+            <div class="question-item pt-4 pl-4 pr-4 pb-2 mb-3">
+                <h5 style="color:#d35656;">{{ q.body }}
+                    {% if not q.anonymous %}
+                    <a class="align-middle" href="/user/{{q.sender.username}}" style="color: gray; font-size: 12pt;"> @{{ q.sender.username }}</a>
+                    {% endif %}
+                </h5>
+                <div class="d-flex">
+                    <a href="/user/{{q.receiver.username}}">
+                        <img class="question-userpic" src="{{q.receiver.avatar(40)}}" alt="">
+                    </a>
+                    <div class="answer-info">
+                        <a href="/user/{{q.receiver.username}}" class="p-0 m-0" style="color: #3c3d47;">@{{q.receiver.username}}</a>
+                        <p class="time m-0" style="margin: 0;"> {{q.get_delta(True)}} ago</p>
+                    </div>
+                </div>
+                <p class="answer-body mt-1">{{q.answer}}</p>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <!-- <div class="row">
+            <div class="question-empty" href="#">
+                <p>You don't have unanswered questions.</p>
+            </div>
+        </div> -->
+    {% endif %}
+</div>
 {% endblock %}

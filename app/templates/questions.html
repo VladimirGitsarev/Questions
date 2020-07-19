@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container questions-container mt-3 p-5 col-lg-8 col-xs-12">
+<div class="container questions-container mt-3 mb-3 p-5 col-lg-8 col-xs-12">
     <div class="row mb-3">
-        <h5>Unanswered questions <span class="q-number align-middle">{{ data|length }}</span></h5>
+        <h5>Unanswered questions <span class="q-number align-middle">{{ questions|length }}</span></h5>
     </div>
-    {% if data %}
-        {% for q in data%}
+    {% if questions %}
+        {% for q in questions%}
         <div class="row">
             <div class="question-item p-4 mb-3">
                 <a href="/question/{{q.id}}"><h5 style="color:#d35656;">{{ q.body }}</h5></a>
@@ -17,9 +17,9 @@
                     <!-- <i class="fas fa-user-secret fa-3x align-middle question-userpic"></i> -->
                 @anonymous </p>
                 {% else %}
-                <a href="/user/{{q.sender}}" style="color: #3c3d47"> <img class="question-userpic" src="{{q.picture}}" alt=""> @{{ q.sender }}</a>
+                <a href="/user/{{ q.sender.username}}" style="color: #3c3d47"> <img class="question-userpic" src="{{q.sender.avatar(40)}}" alt=""> @{{ q.sender.username }}</a>
                 {% endif %}
-                <p class="time">{{ q.time }} ago</p>
+                <p class="time">{{ q.get_delta() }} ago</p>
             </div>
         </div>
         {% endfor %}

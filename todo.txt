@@ -1,4 +1,4 @@
-1. Add subscribtions system (followers)
+1. Add pagination
 2. Add likes for questions
 3. Add uploading the picture for the answer
 4. Add profile editor including avatar uploading

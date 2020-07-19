@@ -36,10 +36,10 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 class AnswerForm(FlaskForm):
-    answer = StringField('Answer', validators=[DataRequired(), Length(max=300)], widget=TextArea())
+    answer = StringField('Answer', validators=[DataRequired(), Length(min=2, max=300)], widget=TextArea())
     submit = SubmitField('Answer')
 
 class AskForm(FlaskForm):
-    body = StringField('Ask', validators=[DataRequired(), Length(max=300)], widget=TextArea())
+    body = StringField('Ask', validators=[DataRequired(), Length(min=2, max=300)], widget=TextArea())
     is_anonymous = BooleanField('Anonymous question')
     submit = SubmitField('Ask')
