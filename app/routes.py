@@ -2,24 +2,53 @@ from app import app, db
 from flask import render_template, flash, redirect, url_for
 from app.forms import LoginForm, RegistrationForm, AnswerForm, AskForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Question
+from app.models import User, Question, followers
 from werkzeug.urls import url_parse
 from flask import request
 from datetime import datetime
+from sqlalchemy import func
+import random
 
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
-    questions = current_user.followed_questions().all()
-    return render_template('index.html', page='Main', questions=questions)
+    page = request.args.get('page', 1, type=int)
+    popular = User.query.join(
+            followers, (followers.c.followed_id == User.id)).group_by(
+            followers.c.followed_id).order_by(func.count(User.id).desc()).limit(100).all()
+    random.shuffle(popular)
+    questions = current_user.followed_questions().paginate(
+        page, app.config['QUESTIONS_PER_PAGE'], False)
+    if not questions.items:
+        ids = []
+        for u in popular:
+            ids.append(u.id)
+        questions = Question.query.filter(Question.receiver_id.in_(ids)).filter_by(answered=True)\
+                      .order_by(Question.answer_timestamp.desc()).paginate(
+                       page, app.config['QUESTIONS_PER_PAGE'], False)
+    next_url = url_for('index', page=questions.next_num) \
+        if questions.has_next else None
+    prev_url = url_for('index', page=questions.prev_num) \
+        if questions.has_prev else None
+    return render_template('index.html', page='Main', questions=questions.items,
+                           popular=popular[:5], next_url=next_url,
+                           prev_url=prev_url)
 
 @app.route('/questions')
 @login_required
 def questions():
-
-    questions = current_user.received.filter_by(answered=False).order_by(-Question.timestamp).all()
-    return render_template('questions.html', page='Unanswered', questions=questions)
+    page = request.args.get('page', 1, type=int)
+    questions = current_user.received.filter_by(answered=False)\
+                .order_by(-Question.timestamp).paginate(
+                page, app.config['QUESTIONS_PER_PAGE'], False)
+    next_url = url_for('questions', page=questions.next_num) \
+        if questions.has_next else None
+    prev_url = url_for('questions', page=questions.prev_num) \
+        if questions.has_prev else None
+    return render_template('questions.html', page='Unanswered', 
+                            questions=questions.items, next_url=next_url,
+                            prev_url=prev_url)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -63,7 +92,7 @@ def register():
 
 @app.route('/user/<username>', methods=['GET', 'POST'])
 def user(username):
-
+    page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     if current_user.username == username:
         return redirect(url_for('index')) # Need to be changed on 'Profile' page 
@@ -75,8 +104,15 @@ def user(username):
         db.session.commit()
         flash('Your question was sent!')
         return(redirect('/user/' + username))
-    questions = user.received.filter_by(answered=True).order_by(-Question.answer_timestamp).all()
-    return render_template('user.html', user=user, questions=questions, page=user.username, form=form)
+    questions = user.received.filter_by(answered=True).order_by(-Question.answer_timestamp)\
+                .paginate(page, app.config['QUESTIONS_PER_PAGE'], False)
+    next_url = url_for('user', username=username, page=questions.next_num) \
+        if questions.has_next else None
+    prev_url = url_for('user', username=username, page=questions.prev_num) \
+        if questions.has_prev else None
+    return render_template('user.html', user=user, questions=questions.items, 
+                            page=user.username, form=form, next_url=next_url,
+                            prev_url=prev_url)
 
 @app.route('/question/<question_id>', methods=['GET', 'POST'])
 @login_required

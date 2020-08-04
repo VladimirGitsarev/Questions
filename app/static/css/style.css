@@ -63,7 +63,7 @@ ul, li{
     animation: 1s ease-out 0s 1 changeOpacity;
 }
 
-input[type="submit"]{
+input[type="submit"] {
     width: 100%;
     background-color: #f66767;
     border-radius: 5px;
@@ -213,10 +213,58 @@ textarea{
     margin-left: 10px;
 }
 
+.followed-container{
+    color:white;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.followed-container a, .followed-container a:hover{
+    color:white;
+    text-decoration: none;
+    transition: all 1s;
+}
+
 #birthdate{
     color:#3c3d47;
     padding: 5px;
     width: 100%;
+}
+
+.page-arrow{
+    background-color: #f66767;
+    border-radius: 5px;
+    border: 1px solid #f66767;
+    transition: all .3s;  
+    color: white;  
+    padding: 3px 7px;
+    margin: 0px 5px;
+}
+
+.page-arrow:hover{
+    background-color: white;
+    transition: all .3s;  
+    color: #f66767;
+}
+
+.likes-block{
+    margin: 10px 0px;
+}
+
+.likes-block img{
+    margin-right: -15px;
+}
+
+.like-link{
+    transition: all .3s;
+    color:#3c3d47;
+}
+
+.like-link:hover{
+    color:#f66767;
+    cursor: pointer;
+    transition: all .3s;
+    text-decoration: none;
 }
 
 @keyframes slideInFromTop {

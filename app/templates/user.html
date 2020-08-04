@@ -65,6 +65,24 @@
                 </h5>
                 <p class="answer-body">{{q.answer}}</p>
                 <p class="time">{{ q.get_delta(True) }} ago</p>
+                <div class="likes-block align-middle">
+                    <a class="like-link" href="#">
+                    {% if q.is_liked(current_user) %}
+                        <i class="fas fa-heart fa-lg"></i>
+                    {% else %}
+                        <i class="far fa-heart fa-lg"></i>
+                    {% endif %}
+                    <span style="font-size: 14pt; margin-right: 5px;">  {% if q.likes.all() %} {{q.likes.all()|length}} {% endif %}</span>
+                    </a>
+                    {% if q.likes.all() %}
+                        {% for u in q.likes.all() %}
+                        <a href="/user/{{u.username}}">
+                            <img class="user-image" src="{{u.avatar(25)}}">
+                        </a>
+                        {% endfor %}
+                    <span style="color:gray; margin:15px; font-size: small;">liked this...</span>
+                    {% endif %}
+                </div>
             </div>
         </div>
         {% endfor %}
@@ -75,6 +93,14 @@
             </div>
         </div>
     {% endif %}
+    <div class="pages d-flex justify-content-center" >
+        {% if prev_url %}
+        <a class="page-arrow" href="{{ prev_url }}"><i class="fas fa-arrow-left"></i></a>
+        {% endif %}
+        {% if next_url %}
+        <a class="page-arrow" href="{{ next_url }}"><i class="fas fa-arrow-right"></i></a>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}

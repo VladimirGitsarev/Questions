@@ -4,6 +4,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import login
 from hashlib import md5
+import random
+from sqlalchemy import func
+
 
 @login.user_loader
 def load_user(id):
@@ -12,6 +15,11 @@ def load_user(id):
 followers = db.Table('followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+)
+
+likes = db.Table('likes',
+    db.Column('answer_id', db.Integer, db.ForeignKey('question.id')),
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'))
 )
     
 class User(UserMixin, db.Model):
@@ -63,10 +71,11 @@ class User(UserMixin, db.Model):
             followers.c.followed_id == user.id).count() > 0
 
     def followed_questions(self):
-        return Question.query.join(
+        return Question.query.filter_by(answered=True).join(
             followers, (followers.c.followed_id == Question.receiver_id)).filter(
                 followers.c.follower_id == self.id).order_by(
                     Question.answer_timestamp.desc())
+
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -79,8 +88,20 @@ class Question(db.Model):
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+    likes = db.relationship(
+        'User', secondary=likes,
+        primaryjoin=(likes.c.answer_id == id),
+        secondaryjoin=(likes.c.user_id == User.id),
+        backref=db.backref('liked', lazy='dynamic'), lazy='dynamic')    
+
     def __repr__(self):
         return '<Question {} from {} to {}>'.format(self.body, self.sender_id, self.receiver_id)
+
+    def is_liked(self, user):
+        print(self.likes.filter(
+            likes.c.user_id == user.id).count() > 0)
+        return self.likes.filter(
+            likes.c.user_id == user.id).count() > 0
 
     def get_delta(self, answer=False):
         
