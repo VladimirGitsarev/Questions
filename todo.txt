@@ -1,6 +1,4 @@
-1. Add pagination
-2. Add likes for questions
-3. Add uploading the picture for the answer
-4. Add profile editor including avatar uploading
-5. Add email notifications about new questions
-6. Set 300 characters limit for questions and answers (Done on the server level)
+1. Add uploading the picture for the answer
+2. Add profile editor including avatar uploading
+3. Add email notifications about new questions
+4. Set 300 characters limit for questions and answers (Done on the server level)

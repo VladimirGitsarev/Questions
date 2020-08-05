@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, jsonify
 from app.forms import LoginForm, RegistrationForm, AnswerForm, AskForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, Question, followers
@@ -157,3 +157,39 @@ def unfollow(username):
     db.session.commit()
     flash('You are not following {} anymore.'.format(username))
     return redirect(url_for('user', username=username))
+
+@app.route('/like/<question_id>')
+@login_required
+def like(question_id):
+    question = Question.query.filter_by(id=question_id).first_or_404()
+    if question is None:
+        flash('Question {} not found.'.format(question.body))
+        return redirect(url_for('index'))
+    question.like(current_user)
+    db.session.commit()
+    likes_count = len(question.likes.all())
+    users = []
+    for u in question.likes.all()[-5:]:
+        users.append({'username':u.username, 'avatar':u.avatar(20)})
+    print(users)
+    return jsonify({
+        'count':likes_count,
+        'users':users})
+
+@app.route('/unlike/<question_id>')
+@login_required
+def unlike(question_id):
+    question = Question.query.filter_by(id=question_id).first_or_404()
+    if question is None:
+        flash('Question {} not found.'.format(question.body))
+        return redirect(url_for('index'))
+    question.unlike(current_user)
+    db.session.commit()
+    likes_count = len(question.likes.all())
+    users = []
+    for u in question.likes.all()[-5:]:
+        users.append({'username':u.username, 'avatar':u.avatar(20)})
+    return jsonify({
+        'count':likes_count,
+        'users':users
+    })

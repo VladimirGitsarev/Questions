@@ -97,11 +97,18 @@ class Question(db.Model):
     def __repr__(self):
         return '<Question {} from {} to {}>'.format(self.body, self.sender_id, self.receiver_id)
 
+    def like(self, user):
+        if not self.is_liked(user):
+            self.likes.append(user)
+    
+    def unlike(self, user):
+        if self.is_liked(user):
+            self.likes.remove(user)
+
     def is_liked(self, user):
-        print(self.likes.filter(
-            likes.c.user_id == user.id).count() > 0)
         return self.likes.filter(
             likes.c.user_id == user.id).count() > 0
+
 
     def get_delta(self, answer=False):
         

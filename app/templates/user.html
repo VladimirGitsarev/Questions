@@ -63,25 +63,25 @@
                     <a class="align-middle" href="/user/{{q.sender.username}}" style="color: gray; font-size: 12pt;"> @{{ q.sender.username }}</a>
                     {% endif %}
                 </h5>
-                <p class="answer-body">{{q.answer}}</p>
+                <p class="answer-body p-0 m-0">{{q.answer}}</p>
                 <p class="time">{{ q.get_delta(True) }} ago</p>
-                <div class="likes-block align-middle">
-                    <a class="like-link" href="#">
+                <div class="likes-block align-middle pt-4">
                     {% if q.is_liked(current_user) %}
-                        <i class="fas fa-heart fa-lg"></i>
+                        <i data-id="{{q.id}}" class="fas fa-heart fa-lg like-link"></i>
                     {% else %}
-                        <i class="far fa-heart fa-lg"></i>
+                        <i data-id="{{q.id}}" class="far fa-heart fa-lg like-link"></i>
                     {% endif %}
-                    <span style="font-size: 14pt; margin-right: 5px;">  {% if q.likes.all() %} {{q.likes.all()|length}} {% endif %}</span>
-                    </a>
+                    <span id="count-{{q.id}}" class="likes-count" {% if not q.likes.all() %} style="display: none;" {% endif %}>  {{q.likes.all()|length}} </span>
+                    <span id="question-{{q.id}}">
                     {% if q.likes.all() %}
-                        {% for u in q.likes.all() %}
+                        {% for u in q.likes.all()[-5:] %}
                         <a href="/user/{{u.username}}">
-                            <img class="user-image" src="{{u.avatar(25)}}">
+                            <img class="user-image" src="{{u.avatar(20)}}">
                         </a>
                         {% endfor %}
-                    <span style="color:gray; margin:15px; font-size: small;">liked this...</span>
                     {% endif %}
+                    </span>
+                    <span id="liked-text-{{q.id}}"class="liked-text" {% if not q.likes.all() %} style="display: none;" {% endif %}>liked this...</span>
                 </div>
             </div>
         </div>
